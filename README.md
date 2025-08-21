@@ -4,11 +4,7 @@
 
 # 🔍 OpenAPI Explorer — README (Resumido)
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)  
-[![Made with React](https://img.shields.io/badge/Made%20with-React-61DAFB.svg)](https://react.dev/)  
-[![TailwindCSS](https://img.shields.io/badge/Styled%20with-TailwindCSS-38B2AC.svg)](https://tailwindcss.com/)  
-[![Framer Motion](https://img.shields.io/badge/Animations-Framer%20Motion-ff0050.svg)](https://www.framer.com/motion/)  
-[![Swagger UI](https://img.shields.io/badge/Docs-Swagger%20UI-brightgreen)](https://swagger.io/tools/swagger-ui/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)[![Made with React](https://img.shields.io/badge/Made%20with-React-61DAFB.svg)](https://react.dev/)[![TailwindCSS](https://img.shields.io/badge/Styled%20with-TailwindCSS-38B2AC.svg)](https://tailwindcss.com/)[![Framer Motion](https://img.shields.io/badge/Animations-Framer%20Motion-ff0050.svg)](https://www.framer.com/motion/)[![Swagger UI](https://img.shields.io/badge/Docs-Swagger%20UI-brightgreen)](https://swagger.io/tools/swagger-ui/)
 
 ---
 
@@ -140,4 +136,6 @@ const handleReload = async () => {
 
 ---
 
-![EjemploDemo](https://i.ibb.co/v6JqCsst/2025-08-2100-44-10-ezgif-com-video-to-gif-converter.gif)
+## ![EjemploDemo](https://i.ibb.co/v6JqCsst/2025-08-2100-44-10-ezgif-com-video-to-gif-converter.gif)
+
+---
