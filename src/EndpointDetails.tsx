@@ -4,6 +4,9 @@ import type {
   OpenApiParameter,
 } from "./interfaces/swagger.interface";
 import { motion, AnimatePresence } from "framer-motion";
+import ReactMarkdown from "react-markdown";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 interface EndpointDetailsProps {
   operation: OpenApiOperation | null;
@@ -28,6 +31,16 @@ export default function EndpointDetails({
     cookie: "bg-yellow-600 text-black",
   };
 
+  // Colores para métodos HTTP
+  const methodColors: Record<string, string> = {
+    get: "bg-green-700 text-white",
+    post: "bg-blue-700 text-white",
+    put: "bg-yellow-600 text-black",
+    delete: "bg-red-700 text-white",
+    patch: "bg-purple-700 text-white",
+  };
+
+  // Colores para status code
   const statusColors: Record<string, string> = {
     "2": "bg-green-600 text-white",
     "3": "bg-blue-600 text-white",
@@ -37,8 +50,8 @@ export default function EndpointDetails({
 
   const statuses = Object.keys(operation.responses);
   const [activeStatus, setActiveStatus] = useState<string>(statuses[0]);
+  const [showParams, setShowParams] = useState(true);
 
-  // Función para renderizar un schema en lista
   const renderSchema = (schema: any) => {
     if (!schema?.properties) return null;
     return (
@@ -63,12 +76,11 @@ export default function EndpointDetails({
 
   return (
     <div className="w-1/3 p-6 overflow-auto border-r border-gray-700 bg-gray-900 text-gray-100 rounded-l shadow-lg">
-      {/* Path y método */}
-      <div className="mb-4 flex flex-wrap items-center gap-2">
+      <div className="sticky top-0 bg-gray-900 z-10 pb-2 mb-4 flex flex-wrap items-center gap-2 border-b border-gray-700">
         {method && (
           <span
             className={`font-mono text-xs uppercase px-2 py-0.5 rounded ${
-              paramColors[method.toLowerCase()] || "bg-gray-500 text-white"
+              methodColors[method.toLowerCase()] || "bg-gray-500 text-white"
             }`}
           >
             {method.toUpperCase()}
@@ -81,64 +93,73 @@ export default function EndpointDetails({
         )}
       </div>
 
-      {/* Summary */}
       <h2 className="text-2xl font-bold mb-2 text-white">
         {operation.summary}
       </h2>
       {operation.description && (
-        <p className="mb-4 text-gray-300">{operation.description}</p>
-      )}
-
-      {/* Parameters */}
-      {operation.parameters && operation.parameters.length > 0 && (
-        <div className="mb-6">
-          <h3 className="font-semibold mb-2 text-lg">Parameters</h3>
-          <AnimatePresence>
-            <motion.ul
-              className="list-disc list-inside space-y-2"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.3 }}
-            >
-              {operation.parameters.map(
-                (param: OpenApiParameter, idx: number) => (
-                  <motion.li
-                    key={idx}
-                    className="flex flex-wrap items-center gap-2"
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -20 }}
-                    transition={{ duration: 0.2, delay: idx * 0.05 }}
-                  >
-                    <span
-                      className={`font-mono text-xs uppercase px-2 py-0.5 rounded ${
-                        paramColors[param.in] || "bg-gray-500 text-white"
-                      }`}
-                    >
-                      {param.in}
-                    </span>
-                    <span className="font-mono">{param.name}</span>
-                    {param.required && (
-                      <span className="text-red-400 font-semibold">
-                        *required*
-                      </span>
-                    )}
-                    {param.description && (
-                      <span className="text-gray-300">
-                        {" "}
-                        - {param.description}
-                      </span>
-                    )}
-                  </motion.li>
-                )
-              )}
-            </motion.ul>
-          </AnimatePresence>
+        <div className="mb-4 text-gray-300 prose prose-invert max-w-none">
+          <ReactMarkdown>{operation.description}</ReactMarkdown>
         </div>
       )}
 
-      {/* Request Body */}
+      {operation.parameters && operation.parameters.length > 0 && (
+        <div className="mb-6">
+          <h3 className="font-semibold mb-2 text-lg">Parameters</h3>
+          <button
+            className="text-sm text-blue-400 underline mb-2"
+            onClick={() => setShowParams(!showParams)}
+          >
+            {showParams ? "Ocultar parámetros" : "Ver parámetros"}
+          </button>
+
+          {showParams && (
+            <AnimatePresence>
+              <motion.ul
+                className="list-disc list-inside space-y-2"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.3 }}
+              >
+                {operation.parameters.map(
+                  (param: OpenApiParameter, idx: number) => (
+                    <motion.li
+                      key={idx}
+                      className="flex flex-col gap-1"
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -20 }}
+                      transition={{ duration: 0.2, delay: idx * 0.05 }}
+                    >
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span
+                          className={`font-mono text-xs uppercase px-2 py-0.5 rounded ${
+                            paramColors[param.in] || "bg-gray-500 text-white"
+                          }`}
+                        >
+                          {param.in}
+                        </span>
+                        <span className="font-mono">{param.name}</span>
+                        {param.required && (
+                          <span className="text-red-400 font-semibold">
+                            *required*
+                          </span>
+                        )}
+                      </div>
+                      {param.description && (
+                        <div className="text-gray-300 prose prose-invert max-w-none">
+                          <ReactMarkdown>{param.description}</ReactMarkdown>
+                        </div>
+                      )}
+                    </motion.li>
+                  )
+                )}
+              </motion.ul>
+            </AnimatePresence>
+          )}
+        </div>
+      )}
+
       {operation.requestBody && (
         <div className="mb-6">
           <h3 className="font-semibold mb-2 text-lg">Request Body</h3>
@@ -148,9 +169,18 @@ export default function EndpointDetails({
                 <p className="text-sm text-gray-400 mb-1">{mime}</p>
                 {media.schema && renderSchema(media.schema)}
                 {media.example && (
-                  <pre className="bg-gray-800 p-2 rounded text-green-400 font-mono overflow-auto text-sm">
+                  <SyntaxHighlighter
+                    language="json"
+                    style={vscDarkPlus}
+                    customStyle={{
+                      borderRadius: "0.5rem",
+                      padding: "0.75rem",
+                      fontSize: "0.875rem",
+                      background: "rgb(31 41 55)",
+                    }}
+                  >
                     {JSON.stringify(media.example, null, 2)}
-                  </pre>
+                  </SyntaxHighlighter>
                 )}
               </div>
             )
@@ -158,7 +188,6 @@ export default function EndpointDetails({
         </div>
       )}
 
-      {/* Responses */}
       {statuses.length > 0 && (
         <div>
           <h3 className="font-semibold mb-2 text-lg">Responses</h3>
@@ -179,18 +208,23 @@ export default function EndpointDetails({
           </div>
 
           {activeStatus && operation.responses[activeStatus] && (
-            <AnimatePresence>
+            <AnimatePresence mode="wait">
               <motion.div
                 key={activeStatus}
+                layout
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.3 }}
                 className="bg-gray-800 p-4 rounded shadow-inner overflow-auto"
               >
-                <p className="mb-2 text-gray-300 font-semibold">
-                  {operation.responses[activeStatus].description}
-                </p>
+                {operation.responses[activeStatus].description && (
+                  <div className="mb-2 text-gray-300 prose prose-invert max-w-none">
+                    <ReactMarkdown>
+                      {operation.responses[activeStatus].description}
+                    </ReactMarkdown>
+                  </div>
+                )}
                 {operation.responses[activeStatus].content &&
                   Object.entries(operation.responses[activeStatus].content).map(
                     ([mime, media]) => (
@@ -198,9 +232,18 @@ export default function EndpointDetails({
                         <p className="text-sm text-gray-400 mb-1">{mime}</p>
                         {media.schema && renderSchema(media.schema)}
                         {media.example && (
-                          <pre className="bg-gray-800 p-2 rounded text-green-400 font-mono overflow-auto text-sm">
+                          <SyntaxHighlighter
+                            language="json"
+                            style={vscDarkPlus}
+                            customStyle={{
+                              borderRadius: "0.5rem",
+                              padding: "0.75rem",
+                              fontSize: "0.875rem",
+                              background: "rgb(31 41 55)",
+                            }}
+                          >
                             {JSON.stringify(media.example, null, 2)}
-                          </pre>
+                          </SyntaxHighlighter>
                         )}
                       </div>
                     )

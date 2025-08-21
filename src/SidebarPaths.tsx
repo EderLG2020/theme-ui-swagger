@@ -1,4 +1,4 @@
-// SidebarPaths.tsx
+import { IoReloadCircle } from "react-icons/io5";
 import type {
   OpenApiDocument,
   OpenApiOperation,
@@ -10,6 +10,7 @@ interface SidebarProps {
   selectedPath: string | null;
   selectedMethod: string | null;
   onSelect: (path: string, method: string) => void;
+  onReload: () => void;
 }
 
 export default function SidebarPaths({
@@ -17,6 +18,7 @@ export default function SidebarPaths({
   selectedPath,
   selectedMethod,
   onSelect,
+  onReload,
 }: SidebarProps) {
   // Agrupar paths por tags
   const groupedPaths: Record<
@@ -34,7 +36,17 @@ export default function SidebarPaths({
 
   return (
     <div className="w-64 bg-gray-900 text-white p-4 overflow-y-auto">
-      <h2 className="text-xl font-bold mb-4">API Paths</h2>
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-xl font-bold">API Paths</h2>
+        <button
+          onClick={onReload}
+          title="Recargar api"
+          className="bg-blue-800 cursor-pointer hover:bg-transparent px-3 py-1 text-sm rounded-lg shadow-md transition"
+        >
+          <IoReloadCircle />
+        </button>
+      </div>
+
       {Object.entries(groupedPaths).map(([tag, endpoints]) => (
         <TagGroup
           key={tag}

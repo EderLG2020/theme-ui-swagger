@@ -15,6 +15,7 @@ export default function App() {
   const [selectedMethod, setSelectedMethod] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [lastUrl, setLastUrl] = useState<string>("");
 
   const handleLoadJson = async (url: string) => {
     setLoading(true);
@@ -22,10 +23,17 @@ export default function App() {
     try {
       const res = await axios.get(url);
       setJsonData(res.data);
+      setLastUrl(url);
     } catch (err: any) {
       setError(err.message || "Error al cargar el JSON");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleReload = async () => {
+    if (lastUrl) {
+      await handleLoadJson(lastUrl);
     }
   };
 
@@ -50,6 +58,7 @@ export default function App() {
           setSelectedPath(path);
           setSelectedMethod(method);
         }}
+        onReload={handleReload}
       />
 
       <EndpointDetails

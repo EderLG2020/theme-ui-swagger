@@ -16,7 +16,9 @@ export default function Responses({ operation }: ResponsesProps) {
   }, [operation]);
 
   if (!operation)
-    return <p className="text-gray-400">Las respuestas se mostrarán aquí</p>;
+    return (
+      <p className="text-gray-400 italic">Las respuestas se mostrarán aquí</p>
+    );
 
   const statuses = Object.keys(operation.responses);
 
@@ -25,29 +27,37 @@ export default function Responses({ operation }: ResponsesProps) {
     "1": "bg-gray-500 text-white",
     "2": "bg-green-600 text-white",
     "3": "bg-blue-600 text-white",
-    "4": "bg-yellow-600 text-black",
+    "4": "bg-yellow-500 text-black",
     "5": "bg-red-600 text-white",
   };
 
   return (
     <div className="flex-1 p-6 overflow-auto text-gray-100">
       <h3 className="font-semibold mb-4 text-lg text-white">Responses</h3>
-      <div className="border border-gray-700 rounded shadow-sm overflow-hidden">
+
+      <div className="border border-gray-700 rounded-lg shadow-md overflow-hidden">
         {/* Tabs */}
         <div className="flex border-b border-gray-700 bg-gray-800">
-          {statuses.map((status) => (
-            <button
-              key={status}
-              onClick={() => setActiveStatus(status)}
-              className={`px-4 py-2 font-mono font-bold text-sm border-r last:border-r-0 ${
-                activeStatus === status
-                  ? `bg-gray-700 ${statusColors[status[0]] || "text-white"}`
-                  : "text-gray-400 hover:text-gray-200"
-              }`}
-            >
-              {status}
-            </button>
-          ))}
+          {statuses.map((status) => {
+            const isActive = activeStatus === status;
+            const colorClass =
+              statusColors[status[0]] || "bg-gray-600 text-white";
+
+            return (
+              <button
+                key={status}
+                onClick={() => setActiveStatus(status)}
+                className={`px-4 py-2 font-mono font-bold text-sm border-r last:border-r-0 transition-colors duration-200
+                  ${
+                    isActive
+                      ? ` ${colorClass}`
+                      : "text-gray-400 hover:text-gray-200"
+                  }`}
+              >
+                {status}
+              </button>
+            );
+          })}
         </div>
 
         {/* Tab content animado */}
@@ -59,13 +69,17 @@ export default function Responses({ operation }: ResponsesProps) {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: 0.25 }}
               >
                 <SyntaxHighlighter
                   language="json"
                   style={vscDarkPlus}
                   wrapLines
                   showLineNumbers
+                  customStyle={{
+                    borderRadius: "0.5rem",
+                    fontSize: "0.85rem",
+                  }}
                 >
                   {JSON.stringify(operation.responses[activeStatus], null, 2)}
                 </SyntaxHighlighter>
