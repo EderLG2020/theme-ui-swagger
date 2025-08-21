@@ -126,8 +126,18 @@ const handleReload = async () => {
 
 ---
 
-## Recursos
+## capturas
 
-![Example](https://i.ibb.co/1tQHN34R/Captura-de-pantalla-2025-08-21-001648.png)  
-![Imagen](https://i.ibb.co/27ZXDzZZ/image.png)  
-![Ejemplo completo](https://i.ibb.co/v6JqCsst/2025-08-2100-44-10-ezgif-com-video-to-gif-converter.gif)
+![Example](https://i.ibb.co/1tQHN34R/Captura-de-pantalla-2025-08-21-001648.png)
+
+---
+
+![Imagen](https://i.ibb.co/27ZXDzZZ/image.png)
+
+---
+
+## Demo completo
+
+---
+
+![EjemploDemo](https://i.ibb.co/v6JqCsst/2025-08-2100-44-10-ezgif-com-video-to-gif-converter.gif)
