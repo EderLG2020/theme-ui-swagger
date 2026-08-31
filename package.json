@@ -7,7 +7,11 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "capture": "node scripts/capture.mjs",
+    "footage": "node scripts/record-footage.mjs",
+    "video:studio": "remotion studio video/index.ts",
+    "video:render": "remotion render video/index.ts Demo out/demo.mp4 --codec=h264 --concurrency=1"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.12",
@@ -22,6 +26,9 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.33.0",
+    "@remotion/cli": "^4.0.519",
+    "@remotion/google-fonts": "^4.0.519",
+    "@remotion/transitions": "^4.0.519",
     "@types/react": "^19.1.10",
     "@types/react-dom": "^19.1.7",
     "@types/react-syntax-highlighter": "^15.5.13",
@@ -29,7 +36,10 @@
     "eslint": "^9.33.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
+    "ffmpeg-static": "^5.3.0",
     "globals": "^16.3.0",
+    "playwright-core": "^1.62.1",
+    "remotion": "^4.0.519",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.39.1",
     "vite": "^7.1.2"

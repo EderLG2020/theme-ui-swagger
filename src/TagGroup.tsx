@@ -1,7 +1,8 @@
 // TagGroup.tsx
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import type { OpenApiOperation } from "../src/interfaces/swagger.interface";
+import { IoChevronForward } from "react-icons/io5";
+import type { OpenApiOperation } from "./interfaces/swagger.interface";
 import EndpointButton from "./EndpointButton";
 
 interface TagGroupProps {
@@ -22,14 +23,25 @@ export default function TagGroup({
   const [collapsed, setCollapsed] = useState(false);
 
   return (
-    <div className="mb-4">
-      <div
+    <div className="mb-2">
+      <button
         onClick={() => setCollapsed(!collapsed)}
-        className="flex justify-between items-center px-2 py-1 rounded bg-gray-800 text-gray-200 cursor-pointer hover:bg-gray-700 transition-colors"
+        className="w-full flex items-center justify-between gap-2 px-2 py-1.5 rounded-md text-zinc-300 hover:bg-zinc-800/60 hover:text-white transition-colors cursor-pointer"
       >
-        <span className="font-semibold">{tag}</span>
-        <span className="text-sm">{collapsed ? "+" : "-"}</span>
-      </div>
+        <span className="flex items-center gap-1.5 font-semibold text-xs uppercase tracking-wide">
+          <motion.span
+            animate={{ rotate: collapsed ? 0 : 90 }}
+            transition={{ duration: 0.15 }}
+            className="text-zinc-500 flex"
+          >
+            <IoChevronForward size={12} />
+          </motion.span>
+          {tag}
+        </span>
+        <span className="text-[10px] font-mono text-zinc-500 bg-zinc-800 rounded-full px-1.5 py-0.5">
+          {endpoints.length}
+        </span>
+      </button>
 
       <AnimatePresence initial={false}>
         {!collapsed && (
@@ -37,8 +49,8 @@ export default function TagGroup({
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="overflow-hidden mt-2"
+            transition={{ duration: 0.2 }}
+            className="overflow-hidden mt-1 pl-1"
           >
             {endpoints.map(({ path, method }) => (
               <EndpointButton

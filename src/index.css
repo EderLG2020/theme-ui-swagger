@@ -1,4 +1,10 @@
 @import "tailwindcss";
+
+body {
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "cv11", "ss01";
+}
+
 /* Estilos generales para todos los scrolls */
 ::-webkit-scrollbar {
   width: 8px;  /* ancho vertical */
@@ -6,15 +12,15 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #1e293b;  /* color del fondo */
+  background: #18181b;  /* zinc-900, a juego con el tema */
   border-radius: 12px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #3b82f6; /* color del "thumb" */
+  background: #6366f1; /* indigo-500 */
   border-radius: 12px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #2563eb; /* al pasar el mouse */
+  background: #4f46e5; /* indigo-600 al pasar el mouse */
 }

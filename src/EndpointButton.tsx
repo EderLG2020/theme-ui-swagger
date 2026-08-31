@@ -1,4 +1,6 @@
 // EndpointButton.tsx
+import { getMethodStyle } from "./utils/apiColors";
+
 interface EndpointButtonProps {
   method: string;
   path: string;
@@ -12,31 +14,32 @@ export default function EndpointButton({
   selected,
   onClick,
 }: EndpointButtonProps) {
-  const methodColors: Record<string, string> = {
-    get: "bg-green-600 text-white",
-    post: "bg-blue-600 text-white",
-    put: "bg-yellow-600 text-white",
-    delete: "bg-red-600 text-white",
-    patch: "bg-purple-600 text-white",
-    options: "bg-gray-600 text-white",
-    head: "bg-gray-500 text-white",
-  };
+  const style = getMethodStyle(method);
 
   return (
     <button
       onClick={onClick}
-      className={`w-full text-left mb-2 p-2 flex items-center gap-2 rounded hover:bg-gray-700 transition-colors duration-200 ${
-        selected ? "bg-gray-700" : ""
+      className={`group w-full text-left mb-1 pl-2 pr-2 py-2 flex items-center gap-2 rounded-md border-l-2 transition-colors duration-150 cursor-pointer ${
+        selected
+          ? `bg-zinc-800/80 ${style.border}`
+          : "border-transparent hover:bg-zinc-800/40"
       }`}
     >
       <span
-        className={`font-mono text-xs uppercase px-2 py-0.5 rounded ${
-          methodColors[method.toLowerCase()] || "bg-gray-500 text-white"
-        }`}
+        className={`font-mono text-[10px] font-bold uppercase w-14 shrink-0 text-center px-1.5 py-0.5 rounded ${style.badge}`}
       >
         {method}
       </span>
-      <span className="text-sm break-all">{path}</span>
+      <span
+        className={`text-sm truncate ${
+          selected
+            ? "text-zinc-100"
+            : "text-zinc-400 group-hover:text-zinc-200"
+        }`}
+        title={path}
+      >
+        {path}
+      </span>
     </button>
   );
 }

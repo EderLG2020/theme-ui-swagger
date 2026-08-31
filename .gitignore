@@ -12,6 +12,11 @@ dist
 dist-ssr
 *.local
 
+# Remotion: material grabado y video renderizado, regenerables con
+# `npm run footage` y `npm run video:render`
+video/public/footage
+out/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
